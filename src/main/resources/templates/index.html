@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MUYLSLE STUDY ONLINE</title>
+    <link rel="stylesheet" th:href="@{/css/style.css(v=8)}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mistral&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="bg-overlay"></div>
+
+    <header class="top-nav">
+        <div class="nav-left">
+            <div class="user-menu" id="user-menu" style="cursor:pointer">
+                <span class="user-text" id="user-text">我的</span>
+                <div class="avatar" id="user-avatar">
+                    <svg class="avatar-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>
+                </div>
+            </div>
+        </div>
+        <div class="nav-center">
+            <h1 class="nav-title">MUYLSLE STUDY ONLINE</h1>
+        </div>
+        <div class="nav-right">
+            <button class="theme-btn-top light" id="theme-light" title="浅色模式">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+            </button>
+            <button class="theme-btn-top dark" id="theme-dark" title="深色模式">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
+            <button class="theme-btn-top upload" id="theme-upload" title="自定义背景">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+            </button>
+            <input type="file" id="bg-upload" accept="image/*">
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="clock-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">今日已学习：<span id="study-total">00:00:00</span></h2>
+                </div>
+                <div class="timer-container">
+                    <div class="timer-ring">
+                        <div class="timer-marks"></div>
+                        <div class="timer-display">
+                            <div class="timer-time" id="countdown-display">00:25:00</div>
+                        </div>
+                    </div>
+                    <div class="timer-controls">
+                        <button class="timer-btn timer-reset" id="countdown-reset">Reset</button>
+                        <button class="timer-btn timer-start" id="countdown-start">Start</button>
+                    </div>
+                    <div class="timer-setting">
+                        <span class="setting-label">设置时间</span>
+                        <div class="setting-inputs">
+                            <div class="time-input-group">
+                                <input type="number" id="set-hours" min="0" max="23" value="0" placeholder="00">
+                                <span class="time-unit">时</span>
+                            </div>
+                            <div class="time-input-group">
+                                <input type="number" id="set-minutes" min="0" max="59" value="25" placeholder="00">
+                                <span class="time-unit">分</span>
+                            </div>
+                            <div class="time-input-group">
+                                <input type="number" id="set-seconds" min="0" max="59" value="0" placeholder="00">
+                                <span class="time-unit">秒</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="time-section">
+            <div class="big-time">
+                <div class="time-main" id="beijing-time" th:text="${beijingTime['time']}">00:00:00</div>
+                <div class="time-date" id="beijing-date" th:text="${beijingTime['date']}">2026年1月1日 星期三</div>
+            </div>
+        </div>
+
+        <div class="music-section">
+            <div class="card music-card">
+                <div class="music-player-horizontal">
+                    <div class="music-left">
+                        <div class="music-now-playing">
+                            <div class="music-cover" id="music-cover">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/><path d="M12 2a10 10 0 0 0-10 10M22 12a10 10 0 0 0-10-10"/></svg>
+                            </div>
+                            <div class="music-title" id="music-title">未播放</div>
+                            <div class="music-artist" id="music-artist">请搜索并选择歌曲</div>
+                        </div>
+                        <div class="progress-control">
+                            <span class="time-label" id="current-time">0:00</span>
+                            <input type="range" class="progress-slider" id="progress-slider" min="0" max="100" value="0" step="0.1">
+                            <span class="time-label" id="total-time">0:00</span>
+                        </div>
+                        <div class="music-controls">
+                            <button class="btn btn-secondary btn-icon" id="prev-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zM9.5 12l8.5 6V6z"/></svg>
+                            </button>
+                            <button class="btn btn-primary btn-icon" id="play-btn">
+                                <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+                                <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+                            </button>
+                            <button class="btn btn-secondary btn-icon" id="next-btn">
+                                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 6h2v12h-2zM6 18l8.5-6L6 6z"/></svg>
+                            </button>
+                        </div>
+                        <div class="volume-control">
+                            <svg class="volume-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M11 5L6 9H2v6h4l5 4z"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"/></svg>
+                            <input type="range" class="volume-slider" id="volume-slider" min="0" max="100" value="50">
+                            <span id="volume-value">50%</span>
+                        </div>
+                    </div>
+                    <div class="music-right">
+                        <div class="music-search">
+                            <input type="text" id="music-search-input" placeholder="搜索歌曲或歌手...">
+                            <button class="btn btn-primary" id="music-search-btn">搜索</button>
+                        </div>
+                        <div class="song-list" id="song-list"></div>
+                    </div>
+                    <audio id="audio-player" preload="metadata"></audio>
+                </div>
+            </div>
+        </div>
+
+        <div class="todo-section">
+            <div class="card">
+                <div class="card-header">
+                    <h2 class="card-title">学习清单</h2>
+                    <button class="btn btn-primary" id="add-todo-btn">+ 添加任务</button>
+                </div>
+                <div class="add-todo-form hidden" id="add-todo-form">
+                    <input type="text" id="todo-content" placeholder="任务内容">
+                    <input type="datetime-local" id="todo-deadline">
+                    <button class="btn btn-primary" id="submit-todo-btn">确认添加</button>
+                </div>
+                <div class="todo-list" id="todo-list">
+                    <div class="todo-item" th:each="todo : ${todos}" th:attr="data-id=${todo.id}">
+                        <div class="todo-header">
+                            <span class="todo-content" th:text="${todo.content}">完成数学作业</span>
+                            <button class="todo-delete">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+                            </button>
+                        </div>
+                        <span class="todo-deadline" th:text="${todo.formattedDeadline}">2026-01-01 23:59</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/js/app.js(v=8)}"></script>
+</body>
+</html>
